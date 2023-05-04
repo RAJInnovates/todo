@@ -1,4 +1,4 @@
-    /* File: src/components/Todo.css */
+   
     
     body {
         background: rgb(255, 173, 65);
@@ -18,7 +18,7 @@
         border: 1px solid white;
         border-radius: 5px;
         padding: 0.5em;
-        margin: 0.5em;
+        margin: 1em;
       }
       
       .task button{
@@ -38,23 +38,27 @@
         text-align: center;
       }
       
-      .create-task input[type=text] {
-        margin: 2.5em 2em;
-        width: 80%;
-        outline: none;
-        border: none;
-        padding: 0.7em;
+    .input-container {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 4px;
+        background-color: #f9f9f9;
       }
-      .task-deadline {
-        font-size: 12px !important;
-        color: gray !important;
-    }
-    
-    .create-task input[type="datetime-local"] {
-        margin-left: 10px !important;
-        font-size: 14px !important;
-        padding: 5px !important;
-        border-radius: 5px !important;
-        border: 1px solid lightgray !important;
-    }
+      
+      .input-text,
+      .input-datetime {
+        border: none;
+        outline: none;
+        background-color: transparent;
+        margin: 0;
+        padding: 0;
+      }
+      
+      .input-datetime {
+        margin-left: 0;
+      }
+      
+      
      

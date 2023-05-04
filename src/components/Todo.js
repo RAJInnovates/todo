@@ -47,18 +47,23 @@ function CreateTask({ addTask }) {
 
     return (
         <form onSubmit={handleSubmit}>
-            <input
-                type="text"
-                value={title}
-                placeholder="Add a new task"
-                onChange={event => setTitle(event.target.value)}
-            />
-            <input
-                type="datetime-local"
-                value={deadline}
-                onChange={event => setDeadline(event.target.value)}
-            />
-            <button type="submit">Add</button>
+            <div className="input-container">
+                <input
+                    className="input-text"
+                    type="text"
+                    value={title}
+                    placeholder="Add a new task"
+                    onChange={event => setTitle(event.target.value)}
+                />
+                <input
+                    className="input-datetime"
+                    type="datetime-local"
+                    value={deadline}
+                    onChange={event => setDeadline(event.target.value)}
+                />
+                <button type="submit">Add</button>
+            </div>
+
         </form>
     );
 }
@@ -107,6 +112,9 @@ function Todo() {
     return (
         <div className="todo-container">
             <div className="header">Pending tasks ({tasksRemaining})</div>
+            <div className="create-task" >
+                <CreateTask addTask={addTask} />
+            </div>
             <div className="tasks">
                 {tasks.map((task, index) => (
                     <Task
@@ -118,9 +126,7 @@ function Todo() {
                     />
                 ))}
             </div>
-            <div className="create-task" >
-                <CreateTask addTask={addTask} />
-            </div>
+
         </div>
     );
 }
