@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import './Todo.css';
+import Confetti from 'react-confetti';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
+
+
 
 function Task({ task, index, completeTask, removeTask }) {
     const deadlineColor = () => {
@@ -19,12 +24,28 @@ function Task({ task, index, completeTask, removeTask }) {
     return (
         <div
             className="task"
-            style={{ textDecoration: task.completed ? "line-through" : "", color: deadlineColor() }}
+            style={{
+                textDecoration: task.completed ? "line-through" : "",
+                color: deadlineColor(),
+            }}
         >
-            <div className="task-title">{task.title}</div>
+
+            <div className="task-title">{task.title}
+                <label>
+                    <input
+                        type="checkbox"
+                        unchecked={task.open}
+                        checked={task.completed}
+                        onChange={() => completeTask(index)}
+                    />
+                </label>
+                <button style={{ background: "red" }} onClick={() => removeTask(index)}>
+                    <FontAwesomeIcon icon={faTrash} />
+                </button>
+            </div>
+
             <div className="task-deadline">{task.deadline}</div>
-            <button style={{ background: "red" }} onClick={() => removeTask(index)}>x</button>
-            <button onClick={() => completeTask(index)}>Complete</button>
+
         </div>
     );
 }
@@ -70,40 +91,37 @@ function CreateTask({ addTask }) {
 
 function Todo() {
     const [tasksRemaining, setTasksRemaining] = useState(0);
-    const [tasks, setTasks] = useState([
-        {
-            title: "Grab some Pizza",
-            completed: true,
-            deadline: ""
-        },
-        {
-            title: "Do your workout",
-            completed: true,
-            deadline: ""
-        },
-        {
-            title: "Hangout with friends",
-            completed: false,
-            deadline: ""
-        }
-    ]);
+    const [showConfetti, setShowConfetti] = useState(false);
+    const [tasks, setTasks] = useState([]);
+    const [completedTasks, setCompletedTasks] = useState([]);
 
     useEffect(() => {
-        setTasksRemaining(tasks.filter(task => !task.completed).length)
-    });
+        setTasksRemaining(tasks.filter((task) => !task.completed).length);
 
-    const addTask = task => {
+
+    }, [tasks]);
+
+    const addTask = (task) => {
         const newTasks = [...tasks, task];
         setTasks(newTasks);
     };
 
-    const completeTask = index => {
+    const completeTask = (index) => {
         const newTasks = [...tasks];
         newTasks[index].completed = true;
         setTasks(newTasks);
+        setShowConfetti(true);
+
+        const completedTask = newTasks[index];
+        const newCompletedTasks = [...completedTasks, completedTask];
+        setCompletedTasks(newCompletedTasks);
+
+        // Remove completed task from pending tasks
+        newTasks.splice(index, 1);
+        setTasks(newTasks);
     };
 
-    const removeTask = index => {
+    const removeTask = (index) => {
         const newTasks = [...tasks];
         newTasks.splice(index, 1);
         setTasks(newTasks);
@@ -112,7 +130,7 @@ function Todo() {
     return (
         <div className="todo-container">
             <div className="header">Pending tasks ({tasksRemaining})</div>
-            <div className="create-task" >
+            <div className="create-task">
                 <CreateTask addTask={addTask} />
             </div>
             <div className="tasks">
@@ -126,10 +144,31 @@ function Todo() {
                     />
                 ))}
             </div>
-
+            <div className="header">Completed tasks ({completedTasks.length})</div>
+            <div className="tasks">
+                {completedTasks.map((task, index) => (
+                    <Task
+                        task={task}
+                        index={index}
+                        completeTask={completeTask}
+                        removeTask={removeTask}
+                        key={index}
+                    />
+                ))}
+            </div>
+            {showConfetti && (
+                <Confetti
+                    width={window.innerWidth}
+                    height={window.innerHeight}
+                    recycle={false}
+                    numberOfPieces={200}
+                />
+            )}
         </div>
     );
 }
+
+
 
 export default
     Todo;
