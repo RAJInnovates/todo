@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Todo from './components/Todo'; // Assuming your App.js is in src/ directory
 import LandingPage from './components/LandingPage'; // Assuming your App.js is in src/ directory
 
-function Ap() {
+function App() {
   return (
     <Router>
       <Routes>
